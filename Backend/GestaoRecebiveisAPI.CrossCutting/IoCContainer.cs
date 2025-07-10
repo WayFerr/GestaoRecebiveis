@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GestaoRecebiveisAPI.Infra;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -20,8 +22,8 @@ namespace GestaoRecebiveisAPI.CrossCutting
 
         public static IServiceCollection AdicionarBancoDeDados(this IServiceCollection services, IConfiguration config)
         {
-            //services.AddDbContext<GestaoRecebiveisContext>(options =>
-            //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<GestaoRecebiveisAPIContext>(options =>
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
             return services;
         }
