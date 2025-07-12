@@ -19,35 +19,21 @@ namespace GestaoRecebiveisAPI.Controllers
         [HttpGet("{id}", Name = "GetEmpresaById")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            try
-            {
-                var empresa = await _empresaService.ObterPorId(id);
-                if (empresa is null) return NotFound("Empresa não encontrada");
+            var empresa = await _empresaService.ObterPorId(id);
+            if (empresa is null) return NotFound("Empresa não encontrada");
 
-                return Ok(empresa);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado");
-            }
+            return Ok(empresa);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmpresaRequest model)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                var empresa = await _empresaService.CadastrarEmpresa(model);
+            var empresa = await _empresaService.CadastrarEmpresa(model);
 
-                return new CreatedAtRouteResult("GetEmpresaById", new { id = empresa.EmpresaId }, empresa);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado");
-            }
+            return new CreatedAtRouteResult("GetEmpresaById", new { id = empresa.EmpresaId }, empresa);
         }
     }
 }

@@ -1,4 +1,5 @@
 using GestaoRecebiveisAPI.CrossCutting;
+using GestaoRecebiveisAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
