@@ -28,7 +28,18 @@ namespace GestaoRecebiveisAPI.Application.Mappings
 
             //Empresa > EmpresaResponse
             CreateMap<Empresa, EmpresaResponse>()
-                .ForMember(dest => dest.DsRamoAtividade, opt => opt.MapFrom(src => src.RamoDeAtividade.Descricao));            
+                .ForMember(dest => dest.DsRamoAtividade, opt => opt.MapFrom(src => src.RamoDeAtividade.Descricao));
+
+            //NotaFiscalRequest > NotaFiscal
+            CreateMap<NotaFiscalRequest, NotaFiscal>()
+                .ForMember(dest => dest.NotaFiscalId, opt => opt.Ignore())
+                .ForMember(dest => dest.Empresa, opt => opt.Ignore());
+
+            //NotaFiscalResponse > NotaFiscal
+            CreateMap<NotaFiscalResponse, NotaFiscal>().IgnoreAllPropertiesWithAnInaccessibleSetter();
+
+            //NotaFiscal > NotaFiscalResponse
+            CreateMap<NotaFiscal, NotaFiscalResponse>();            
         }
     }
 }
