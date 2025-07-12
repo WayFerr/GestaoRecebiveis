@@ -23,12 +23,12 @@ namespace GestaoRecebiveisAPI.Application.Mappings
             CreateMap<Empresa, EmpresaRequest>()
                 .ForMember(dest => dest.DsRamoAtividade, opt => opt.MapFrom(src => src.RamoDeAtividade.Descricao));
 
-            //Empresa > EmpresaResponse
-            CreateMap<Empresa, EmpresaResponse>()
-                .ForMember(dest => dest.DsRamoAtividade, opt => opt.MapFrom(src => src.RamoDeAtividade.Descricao));
-
             //EmpresaResponse > Empresa
             CreateMap<EmpresaResponse, Empresa>().IgnoreAllPropertiesWithAnInaccessibleSetter();
+
+            //Empresa > EmpresaResponse
+            CreateMap<Empresa, EmpresaResponse>()
+                .ForMember(dest => dest.DsRamoAtividade, opt => opt.MapFrom(src => src.RamoDeAtividade.Descricao));            
         }
     }
 }

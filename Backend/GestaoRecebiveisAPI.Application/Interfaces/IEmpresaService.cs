@@ -12,5 +12,6 @@ namespace GestaoRecebiveisAPI.Application.Interfaces
     {
         Task<EmpresaResponse> CadastrarEmpresa(EmpresaRequest model);
         Task<EmpresaResponse> ObterPorId(int id);
+        Task<LimiteEmpresaResponse> CalcularLimite(int id);
     }
 }

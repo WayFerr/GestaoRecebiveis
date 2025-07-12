@@ -4,6 +4,7 @@ using GestaoRecebiveisAPI.Application.DTOs.Response;
 using GestaoRecebiveisAPI.Application.Interfaces;
 using GestaoRecebiveisAPI.Domain.Entidades;
 using GestaoRecebiveisAPI.Domain.Interfaces;
+using GestaoRecebiveisAPI.Domain.Strategies.Limites;
 using GestaoRecebiveisAPI.Infra;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,14 +20,16 @@ namespace GestaoRecebiveisAPI.Application.Services
     {
         private readonly GestaoRecebiveisAPIContext _context;
         private readonly IMapper _mapper;
+        private readonly IEnumerable<ILimiteStrategy> _strategies;
         private readonly IEmpresaRepository _empresaRepository;
         private readonly IRamoDeAtividadeService _ramoDeAtividadeService;
 
-        public EmpresaService(GestaoRecebiveisAPIContext context, IMapper mapper, IEmpresaRepository empresaRepository, 
-            IRamoDeAtividadeService ramoDeAtividadeService)
+        public EmpresaService(GestaoRecebiveisAPIContext context, IMapper mapper, IEnumerable<ILimiteStrategy> strategies,
+            IEmpresaRepository empresaRepository, IRamoDeAtividadeService ramoDeAtividadeService)
         {
             _mapper = mapper;
             _context = context;
+            _strategies = strategies;
             _empresaRepository = empresaRepository;
             _ramoDeAtividadeService = ramoDeAtividadeService;
         }
@@ -60,6 +63,25 @@ namespace GestaoRecebiveisAPI.Application.Services
             var empresaResponse = _mapper.Map<EmpresaResponse>(empresa);
 
             return empresaResponse;
+        }
+
+        public async Task<LimiteEmpresaResponse> CalcularLimite(int id)
+        {
+            var empresa = await _empresaRepository.ObterPorId(id) ?? throw new Exception("Empresa não encontrada.");
+
+            var regraCalculo = _strategies.FirstOrDefault(x => x.PodeAplicar(empresa.FaturamentoMensal, empresa.RamoDeAtividade.Descricao));
+
+            if (regraCalculo is null)
+                throw new InvalidOperationException("Nenhuma regra de limite aplicável encontrada.");
+
+            var limiteResponse = new LimiteEmpresaResponse()
+            {
+                Id = empresa.EmpresaId,
+                Nome = empresa.Nome,
+                LimiteAntecipacao = regraCalculo.CalcularLimite(empresa.FaturamentoMensal)
+            };
+
+            return limiteResponse;
         }
     }
 }

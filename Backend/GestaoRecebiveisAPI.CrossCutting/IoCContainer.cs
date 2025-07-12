@@ -2,6 +2,7 @@
 using GestaoRecebiveisAPI.Application.Mappings;
 using GestaoRecebiveisAPI.Application.Services;
 using GestaoRecebiveisAPI.Domain.Interfaces;
+using GestaoRecebiveisAPI.Domain.Strategies.Limites;
 using GestaoRecebiveisAPI.Infra;
 using GestaoRecebiveisAPI.Infra.Repositorios;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,12 @@ namespace GestaoRecebiveisAPI.CrossCutting
 
             services.AddScoped<IEmpresaService, EmpresaService>();
             services.AddScoped<IRamoDeAtividadeService, RamoDeAtividadeService>();
+
+            services.AddScoped<ILimiteStrategy, LimiteBaixoStrategy>();
+            services.AddScoped<ILimiteStrategy, LimiteMedioServicosStrategy>();
+            services.AddScoped<ILimiteStrategy, LimiteMedioProdutosStrategy>();
+            services.AddScoped<ILimiteStrategy, LimiteAltoServicosStrategy>();
+            services.AddScoped<ILimiteStrategy, LimiteAltoProdutosStrategy>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using GestaoRecebiveisAPI.Application.DTOs.Request;
 using GestaoRecebiveisAPI.Application.Interfaces;
+using GestaoRecebiveisAPI.Domain.Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,8 +26,8 @@ namespace GestaoRecebiveisAPI.Controllers
             return Ok(empresa);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] EmpresaRequest model)
+        [HttpPost("CadastrarEmpresa")]
+        public async Task<IActionResult> CadastrarEmpresa([FromBody] EmpresaRequest model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -34,6 +35,14 @@ namespace GestaoRecebiveisAPI.Controllers
             var empresa = await _empresaService.CadastrarEmpresa(model);
 
             return new CreatedAtRouteResult("GetEmpresaById", new { id = empresa.EmpresaId }, empresa);
+        }
+
+        [HttpGet("CalcularLimite/{id}")]
+        public async Task<IActionResult> CalcularLimite([FromRoute] int id)
+        {
+            var limite = await _empresaService.CalcularLimite(id);
+
+            return Ok(limite);
         }
     }
 }
