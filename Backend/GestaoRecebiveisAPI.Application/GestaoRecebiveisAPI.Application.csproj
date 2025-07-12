@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GestaoRecebiveisAPI.Dominio\GestaoRecebiveisAPI.Domain.csproj" />
+    <ProjectReference Include="..\GestaoRecebiveisAPI.Infra\GestaoRecebiveisAPI.Infra.csproj" />
+  </ItemGroup>
+
 </Project>

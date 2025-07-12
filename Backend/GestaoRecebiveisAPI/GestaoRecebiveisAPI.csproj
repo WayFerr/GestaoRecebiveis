@@ -15,10 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\GestaoRecebiveisAPI.Application\GestaoRecebiveisAPI.Application.csproj" />
     <ProjectReference Include="..\GestaoRecebiveisAPI.CrossCutting\GestaoRecebiveisAPI.CrossCutting.csproj" />
   </ItemGroup>
 

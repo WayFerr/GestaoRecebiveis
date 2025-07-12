@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoRecebiveisAPI", "GestaoRecebiveisAPI\GestaoRecebiveisAPI.csproj", "{103420E3-4043-4BDD-B70F-17F909DB28CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoRecebiveisAPI", "GestaoRecebiveisAPI\GestaoRecebiveisAPI.csproj", "{103420E3-4043-4BDD-B70F-17F909DB28CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{CD5B7B48-DD17-4C81-B4CC-3FD5B9EF03EF}"
 EndProject
@@ -12,16 +12,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{78EC9F32-8A42-4E3B-BE6E-98890CEAB37D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - CrossCutting", "5 - CrossCutting", "{87E46C97-C384-4622-8889-32D7FDA9B575}"
+	ProjectSection(SolutionItems) = preProject
+		GestaoRecebiveisAPI.Infra\Repositorios\RamoDeAtividadeRepository.cs = GestaoRecebiveisAPI.Infra\Repositorios\RamoDeAtividadeRepository.cs
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoRecebiveisAPI.Domain", "GestaoRecebiveisAPI.Dominio\GestaoRecebiveisAPI.Domain.csproj", "{5B52B254-9CBA-4982-9925-1EF1FC5D51ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoRecebiveisAPI.Domain", "GestaoRecebiveisAPI.Dominio\GestaoRecebiveisAPI.Domain.csproj", "{5B52B254-9CBA-4982-9925-1EF1FC5D51ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoRecebiveisAPI.Infra", "GestaoRecebiveisAPI.Infra\GestaoRecebiveisAPI.Infra.csproj", "{07135C0B-39F5-4559-810E-8A95F4D651CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoRecebiveisAPI.Infra", "GestaoRecebiveisAPI.Infra\GestaoRecebiveisAPI.Infra.csproj", "{07135C0B-39F5-4559-810E-8A95F4D651CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoRecebiveisAPI.CrossCutting", "GestaoRecebiveisAPI.CrossCutting\GestaoRecebiveisAPI.CrossCutting.csproj", "{9297578E-E2D7-4250-AECE-C6D72A9CCB8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoRecebiveisAPI.CrossCutting", "GestaoRecebiveisAPI.CrossCutting\GestaoRecebiveisAPI.CrossCutting.csproj", "{9297578E-E2D7-4250-AECE-C6D72A9CCB8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Api", "1 - Api", "{7D911783-FFCF-42D4-B806-8ADFF52FB49C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoRecebiveisAPI.Application", "GestaoRecebiveisAPI.Application\GestaoRecebiveisAPI.Application.csproj", "{94551D58-B0ED-4333-9225-B9FDB407F26B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoRecebiveisAPI.Application", "GestaoRecebiveisAPI.Application\GestaoRecebiveisAPI.Application.csproj", "{94551D58-B0ED-4333-9225-B9FDB407F26B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

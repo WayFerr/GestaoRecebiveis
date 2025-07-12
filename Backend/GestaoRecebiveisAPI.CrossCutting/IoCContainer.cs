@@ -1,4 +1,9 @@
-﻿using GestaoRecebiveisAPI.Infra;
+﻿using GestaoRecebiveisAPI.Application.Interfaces;
+using GestaoRecebiveisAPI.Application.Mappings;
+using GestaoRecebiveisAPI.Application.Services;
+using GestaoRecebiveisAPI.Domain.Interfaces;
+using GestaoRecebiveisAPI.Infra;
+using GestaoRecebiveisAPI.Infra.Repositorios;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,12 +15,18 @@ namespace GestaoRecebiveisAPI.CrossCutting
     {
         public static IServiceCollection AdicionarServicos(this IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+            services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<IRamoDeAtividadeService, RamoDeAtividadeService>();
 
             return services;
         }
 
         public static IServiceCollection AdicionarRepositorios(this IServiceCollection services)
         {
+            services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+            services.AddScoped<IRamoDeAtividadeRepository, RamoDeAtividadeRepository>();
 
             return services;
         }
