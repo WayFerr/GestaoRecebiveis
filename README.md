@@ -40,4 +40,4 @@ Para rodar o projeto localmente, você precisa configurar a `ConnectionString` n
 
 ## 🗄 Backup do banco
 
-Um arquivo `.bak` com o banco de dados será entregue juntamente com este código.
+Um arquivo .bak com o banco de dados está incluído neste repositório, na pasta BancoDeDados.
