@@ -28,6 +28,51 @@ namespace GestaoRecebiveisAPI.Application.Services
             _notaFiscalRepository = notaFiscalRepository;
         }
 
+        public async Task<CheckoutResponse> RealizarCheckout(int empresaId)
+        {
+            var carrinho = await _carrinhoRepository.ObterCarrinhoComNotas(empresaId)
+            ?? throw new Exception("Carrinho não encontrado.");
+
+            var empresa = carrinho.Empresa;
+            var limite = await _empresaService.CalcularLimite(empresa.EmpresaId);
+
+            const decimal taxa = 0.0465m;
+            var hoje = DateTime.Today;
+
+            var notasCalculadas = new List<NotaFiscalCheckoutResponse>();
+
+            foreach (var item in carrinho.Itens)
+            {
+                var nf = item.NotaFiscal;
+
+                var prazo = (nf.DtVencimento - hoje).Days;
+                prazo = Math.Max(prazo, 0);
+
+                var fator = (decimal)Math.Pow((double)(1 + taxa), prazo / 30.0);
+                var valorLiquido = nf.Valor / fator;
+
+                notasCalculadas.Add(new NotaFiscalCheckoutResponse
+                {
+                    Numero = nf.Numero,
+                    ValorBruto = nf.Valor,
+                    ValorLiquido = Math.Round(valorLiquido, 2)
+                });
+            }
+
+            var totalBruto = notasCalculadas.Sum(n => n.ValorBruto);
+            var totalLiquido = notasCalculadas.Sum(n => n.ValorLiquido);
+
+            return new CheckoutResponse
+            {
+                Empresa = empresa.Nome,
+                Cnpj = empresa.Cnpj,
+                Limite = limite.LimiteAntecipacao,
+                TotalBruto = totalBruto,
+                TotalLiquido = totalLiquido,
+                NotasFiscais = notasCalculadas
+            };
+        }
+
         public async Task<TotalCarrinhoResponse> AdicionarNota(int empresaId, int notaFiscalId)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -84,7 +129,7 @@ namespace GestaoRecebiveisAPI.Application.Services
             };
 
             return carrinhoResponse;
-        }
+        }        
 
         public async Task<TotalCarrinhoResponse> RemoverNota(int empresaId, int notaFiscalId)
         {

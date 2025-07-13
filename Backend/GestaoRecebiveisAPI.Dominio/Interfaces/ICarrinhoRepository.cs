@@ -13,5 +13,6 @@ namespace GestaoRecebiveisAPI.Domain.Interfaces
         Task<Carrinho> AdicionarItem(int empresaId, int notaFiscalId);
         Task<Carrinho> RemoverItem(int empresaId, int notaFiscalId);
         Task<Carrinho> AdicionarCarrinho(int empresaId);
+        Task<Carrinho> ObterCarrinhoComNotas(int empresaId);
     }
 }

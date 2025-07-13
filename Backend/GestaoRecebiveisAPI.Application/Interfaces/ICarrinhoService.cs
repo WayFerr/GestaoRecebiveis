@@ -9,6 +9,7 @@ namespace GestaoRecebiveisAPI.Application.Interfaces
 {
     public interface ICarrinhoService
     {
+        Task<CheckoutResponse> RealizarCheckout(int empresaId);
         Task<TotalCarrinhoResponse> AdicionarNota(int empresaId, int notaFiscalId);
         Task<TotalCarrinhoResponse> RemoverNota(int empresaId, int notaFiscalId);
         Task<TotalCarrinhoResponse> ObterTotalDoCarrinho(int empresaId);

@@ -61,5 +61,11 @@ namespace GestaoRecebiveisAPI.Infra.Repositorios
 
             return carrinho;
         }
+
+        public async Task<Carrinho> ObterCarrinhoComNotas(int empresaId)
+        {
+            return await _context.Carrinhos.Include(c => c.Empresa).Include(c => c.Itens)
+            .ThenInclude(i => i.NotaFiscal).FirstOrDefaultAsync(c => c.EmpresaId == empresaId);
+        }
     }
 }

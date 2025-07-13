@@ -16,10 +16,17 @@ namespace GestaoRecebiveisAPI.Controllers
             _carrinhoService = carrinhoService;
         }
 
+        [HttpGet("[action]/{empresaId}")]
+        public async Task<IActionResult> Checkout([FromRoute] int empresaId)
+        {
+            var response = await _carrinhoService.RealizarCheckout(empresaId);
+            return Ok(response);
+        }
+
         [HttpPost("[action]/{empresaId}/{notaFiscalId}")]
         public async Task<IActionResult> AdicionarNota([FromRoute] int empresaId, [FromRoute] int notaFiscalId)
         {
-            var totalCarrinho = await _carrinhoService.AdicionarNota(empresaId, notaFiscalId);            
+            var totalCarrinho = await _carrinhoService.AdicionarNota(empresaId, notaFiscalId);
             return new CreatedAtRouteResult("ObterTotal", new { empresaId = totalCarrinho.EmpresaId }, totalCarrinho);
         }
 
