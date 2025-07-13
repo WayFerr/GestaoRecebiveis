@@ -18,8 +18,8 @@ namespace GestaoRecebiveisAPI.Controllers
             _notaFiscalService = notaFiscalService;
         }
 
-        [HttpGet("{id}", Name = "GetNotaFiscalById")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        [HttpGet("{id}", Name = "ObterNotaFiscalPorId")]
+        public async Task<IActionResult> ObterPorId([FromRoute] int id)
         {
             var notaFiscal = await _notaFiscalService.ObterPorId(id);
             if (notaFiscal is null) return NotFound("Nota fiscal não encontrada");
@@ -35,7 +35,7 @@ namespace GestaoRecebiveisAPI.Controllers
 
             var notaFiscal = await _notaFiscalService.CadastrarNotaFiscal(model);
 
-            return new CreatedAtRouteResult("GetNotaFiscalById", new { id = notaFiscal.NotaFiscalId}, notaFiscal);
+            return new CreatedAtRouteResult("ObterNotaFiscalPorId", new { id = notaFiscal.NotaFiscalId}, notaFiscal);
         }
     }
 }

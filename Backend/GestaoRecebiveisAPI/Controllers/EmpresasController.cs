@@ -15,8 +15,8 @@ namespace GestaoRecebiveisAPI.Controllers
             _empresaService = empresaService;
         }
 
-        [HttpGet("{id}", Name = "GetEmpresaById")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        [HttpGet("{id}", Name = "ObterEmpresaPorId")]
+        public async Task<IActionResult> ObterPorId([FromRoute] int id)
         {
             var empresa = await _empresaService.ObterPorId(id);
             if (empresa is null) return NotFound("Empresa não encontrada");
@@ -32,7 +32,7 @@ namespace GestaoRecebiveisAPI.Controllers
 
             var empresa = await _empresaService.CadastrarEmpresa(model);
 
-            return new CreatedAtRouteResult("GetEmpresaById", new { id = empresa.EmpresaId }, empresa);
+            return new CreatedAtRouteResult("ObterEmpresaPorId", new { id = empresa.EmpresaId }, empresa);
         }
 
         [HttpGet("[action]/{id}")]

@@ -21,6 +21,7 @@ namespace GestaoRecebiveisAPI.CrossCutting
             services.AddScoped<IEmpresaService, EmpresaService>();
             services.AddScoped<IRamoDeAtividadeService, RamoDeAtividadeService>();
             services.AddScoped<INotaFiscalService, NotaFiscalService>();
+            services.AddScoped<ICarrinhoService, CarrinhoService>();
 
             services.AddScoped<ILimiteStrategy, LimiteBaixoStrategy>();
             services.AddScoped<ILimiteStrategy, LimiteMedioServicosStrategy>();
@@ -36,6 +37,7 @@ namespace GestaoRecebiveisAPI.CrossCutting
             services.AddScoped<IEmpresaRepository, EmpresaRepository>();
             services.AddScoped<IRamoDeAtividadeRepository, RamoDeAtividadeRepository>();
             services.AddScoped<INotaFiscalRepository, NotaFiscalRepository>();
+            services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
 
             return services;
         }
