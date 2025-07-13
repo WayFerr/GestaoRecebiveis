@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestaoRecebiveisAPI.Infra.Migrations
 {
     [DbContext(typeof(GestaoRecebiveisAPIContext))]
-    [Migration("20250710042227_CriacaoTabelasIniciais")]
-    partial class CriacaoTabelasIniciais
+    [Migration("20250713000455_CriacaoDasTabelas")]
+    partial class CriacaoDasTabelas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,25 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.Carrinho", b =>
+                {
+                    b.Property<int>("CarrinhoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarrinhoId"));
+
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarrinhoId");
+
+                    b.HasIndex("EmpresaId")
+                        .IsUnique();
+
+                    b.ToTable("Carrinhos");
+                });
 
             modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.Empresa", b =>
                 {
@@ -51,9 +70,36 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
 
                     b.HasKey("EmpresaId");
 
+                    b.HasIndex("Cnpj")
+                        .IsUnique();
+
                     b.HasIndex("RamoAtividadeId");
 
                     b.ToTable("Empresas");
+                });
+
+            modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.ItemCarrinho", b =>
+                {
+                    b.Property<int>("ItemCarrinhoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemCarrinhoId"));
+
+                    b.Property<int>("CarrinhoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotaFiscalId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemCarrinhoId");
+
+                    b.HasIndex("NotaFiscalId");
+
+                    b.HasIndex("CarrinhoId", "NotaFiscalId")
+                        .IsUnique();
+
+                    b.ToTable("ItensCarrinhos");
                 });
 
             modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.NotaFiscal", b =>
@@ -98,6 +144,9 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
 
                     b.HasKey("RamoAtividadeId");
 
+                    b.HasIndex("Descricao")
+                        .IsUnique();
+
                     b.ToTable("RamosDeAtividade");
 
                     b.HasData(
@@ -113,6 +162,17 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                         });
                 });
 
+            modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.Carrinho", b =>
+                {
+                    b.HasOne("GestaoRecebiveisAPI.Domain.Entidades.Empresa", "Empresa")
+                        .WithOne()
+                        .HasForeignKey("GestaoRecebiveisAPI.Domain.Entidades.Carrinho", "EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Empresa");
+                });
+
             modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.Empresa", b =>
                 {
                     b.HasOne("GestaoRecebiveisAPI.Domain.Entidades.RamoDeAtividade", "RamoDeAtividade")
@@ -124,6 +184,25 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                     b.Navigation("RamoDeAtividade");
                 });
 
+            modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.ItemCarrinho", b =>
+                {
+                    b.HasOne("GestaoRecebiveisAPI.Domain.Entidades.Carrinho", "Carrinho")
+                        .WithMany("Itens")
+                        .HasForeignKey("CarrinhoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GestaoRecebiveisAPI.Domain.Entidades.NotaFiscal", "NotaFiscal")
+                        .WithMany()
+                        .HasForeignKey("NotaFiscalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Carrinho");
+
+                    b.Navigation("NotaFiscal");
+                });
+
             modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.NotaFiscal", b =>
                 {
                     b.HasOne("GestaoRecebiveisAPI.Domain.Entidades.Empresa", "Empresa")
@@ -133,6 +212,11 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.Carrinho", b =>
+                {
+                    b.Navigation("Itens");
                 });
 
             modelBuilder.Entity("GestaoRecebiveisAPI.Domain.Entidades.Empresa", b =>

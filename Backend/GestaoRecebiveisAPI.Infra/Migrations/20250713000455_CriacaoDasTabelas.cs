@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GestaoRecebiveisAPI.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class CriacaoTabelasIniciais : Migration
+    public partial class CriacaoDasTabelas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,6 +49,25 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Carrinhos",
+                columns: table => new
+                {
+                    CarrinhoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmpresaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carrinhos", x => x.CarrinhoId);
+                    table.ForeignKey(
+                        name: "FK_Carrinhos_Empresas_EmpresaId",
+                        column: x => x.EmpresaId,
+                        principalTable: "Empresas",
+                        principalColumn: "EmpresaId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NotasFiscais",
                 columns: table => new
                 {
@@ -70,6 +89,32 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ItensCarrinhos",
+                columns: table => new
+                {
+                    ItemCarrinhoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CarrinhoId = table.Column<int>(type: "int", nullable: false),
+                    NotaFiscalId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItensCarrinhos", x => x.ItemCarrinhoId);
+                    table.ForeignKey(
+                        name: "FK_ItensCarrinhos_Carrinhos_CarrinhoId",
+                        column: x => x.CarrinhoId,
+                        principalTable: "Carrinhos",
+                        principalColumn: "CarrinhoId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ItensCarrinhos_NotasFiscais_NotaFiscalId",
+                        column: x => x.NotaFiscalId,
+                        principalTable: "NotasFiscais",
+                        principalColumn: "NotaFiscalId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "RamosDeAtividade",
                 columns: new[] { "RamoAtividadeId", "Descricao" },
@@ -80,19 +125,54 @@ namespace GestaoRecebiveisAPI.Infra.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carrinhos_EmpresaId",
+                table: "Carrinhos",
+                column: "EmpresaId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Empresas_Cnpj",
+                table: "Empresas",
+                column: "Cnpj",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Empresas_RamoAtividadeId",
                 table: "Empresas",
                 column: "RamoAtividadeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ItensCarrinhos_CarrinhoId_NotaFiscalId",
+                table: "ItensCarrinhos",
+                columns: new[] { "CarrinhoId", "NotaFiscalId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItensCarrinhos_NotaFiscalId",
+                table: "ItensCarrinhos",
+                column: "NotaFiscalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NotasFiscais_EmpresaId",
                 table: "NotasFiscais",
                 column: "EmpresaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RamosDeAtividade_Descricao",
+                table: "RamosDeAtividade",
+                column: "Descricao",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ItensCarrinhos");
+
+            migrationBuilder.DropTable(
+                name: "Carrinhos");
+
             migrationBuilder.DropTable(
                 name: "NotasFiscais");
 

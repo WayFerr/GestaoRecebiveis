@@ -46,6 +46,7 @@ namespace GestaoRecebiveisAPI.Application.Services
 
                 empresa = await _empresaRepository.CadastrarEmpresa(empresa);
                 var response = _mapper.Map<EmpresaResponse>(empresa);
+                response.DsRamoAtividade = ramo.Descricao;
 
                 await transaction.CommitAsync();
                 return response;

@@ -23,6 +23,9 @@ namespace GestaoRecebiveisAPI.Infra.ConfiguracoesTabelas
                 .IsRequired()
                 .HasMaxLength(14);
 
+            builder.HasIndex(x => x.Cnpj)
+            .IsUnique();
+
             builder.Property(x => x.FaturamentoMensal)
                 .IsRequired()
                 .HasColumnType("decimal(16,2)");

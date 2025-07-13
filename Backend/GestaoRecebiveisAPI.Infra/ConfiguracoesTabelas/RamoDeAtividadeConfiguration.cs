@@ -19,6 +19,9 @@ namespace GestaoRecebiveisAPI.Infra.ConfiguracoesTabelas
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.HasIndex(x => x.Descricao)
+            .IsUnique();
+
             builder.HasData(
                 new RamoDeAtividade { RamoAtividadeId = 1, Descricao = "Produtos" },
                 new RamoDeAtividade { RamoAtividadeId = 2, Descricao = "Serviços" }
