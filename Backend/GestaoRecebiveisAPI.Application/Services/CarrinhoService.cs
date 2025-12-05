@@ -1,14 +1,8 @@
 ﻿using GestaoRecebiveisAPI.Application.DTOs.Response;
+using GestaoRecebiveisAPI.Application.Extensions;
 using GestaoRecebiveisAPI.Application.Interfaces;
-using GestaoRecebiveisAPI.Domain.Entidades;
 using GestaoRecebiveisAPI.Domain.Interfaces;
 using GestaoRecebiveisAPI.Infra;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestaoRecebiveisAPI.Application.Services
 {
@@ -36,28 +30,7 @@ namespace GestaoRecebiveisAPI.Application.Services
             var empresa = carrinho.Empresa;
             var limite = await _empresaService.CalcularLimite(empresa.EmpresaId);
 
-            const decimal taxa = 0.0465m;
-            var hoje = DateTime.Today;
-
-            var notasCalculadas = new List<NotaFiscalCheckoutResponse>();
-
-            foreach (var item in carrinho.Itens)
-            {
-                var nf = item.NotaFiscal;
-
-                var prazo = (nf.DtVencimento - hoje).Days;
-                prazo = Math.Max(prazo, 0);
-
-                var fator = (decimal)Math.Pow((double)(1 + taxa), prazo / 30.0);
-                var valorLiquido = nf.Valor / fator;
-
-                notasCalculadas.Add(new NotaFiscalCheckoutResponse
-                {
-                    Numero = nf.Numero,
-                    ValorBruto = nf.Valor,
-                    ValorLiquido = Math.Round(valorLiquido, 2)
-                });
-            }
+            var notasCalculadas = carrinho.CalcularNotas();
 
             var totalBruto = notasCalculadas.Sum(n => n.ValorBruto);
             var totalLiquido = notasCalculadas.Sum(n => n.ValorLiquido);
@@ -119,7 +92,8 @@ namespace GestaoRecebiveisAPI.Application.Services
 
         public async Task<TotalCarrinhoResponse> ObterTotalDoCarrinho(int empresaId)
         {
-            var carrinho = await _carrinhoRepository.ObterCarrinhoPorEmpresaId(empresaId);
+            var carrinho = await _carrinhoRepository.ObterCarrinhoPorEmpresaId(empresaId) 
+                ?? throw new Exception("Carrinho não encontrado.");
 
             var carrinhoResponse = new TotalCarrinhoResponse()
             {
